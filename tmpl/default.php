@@ -39,13 +39,23 @@ $url_params = implode('&', $url_params);
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx') ?? '', ENT_COMPAT, 'UTF-8');
 
 /* Load external JS only once per page */
-$wa->addInlineScript('
+if ($type === 'shop') {
+  $wa->addInlineScript("
     (function() {
-      var u="' . $base_url . '/' . $project_id . '/' . $type . '/' . $id . '";
-      var d=document, g=d.createElement(\'script\'), s=d.getElementsByTagName(\'script\')[0];
-      g.type=\'text/javascript\'; g.async=true; g.defer=true; g.src=u; s.parentNode.insertBefore(g,s);
+      var u='" . $base_url . "/" . $project_id . "/" . $type . "';
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.id='tw-" . $id . "'; g.defer=true; g.src=u; s.parentNode.insertBefore(g,s);
     })();
-');
+  ");
+} else {
+  $wa->addInlineScript('
+      (function() {
+        var u="' . $base_url . '/' . $project_id . '/' . $type . '/' . $id . '";
+        var d=document, g=d.createElement(\'script\'), s=d.getElementsByTagName(\'script\')[0];
+        g.type=\'text/javascript\'; g.async=true; g.defer=true; g.src=u; s.parentNode.insertBefore(g,s);
+      })();
+  ');
+}
 ?>
 
 <!-- twingle -->

@@ -86,6 +86,7 @@
 					default="widget"
 					>
 					<option value="widget">MOD_TWINGLE_FIELD_TYPE_VALUE_WIDGET</option>
+					<option value="shop">MOD_TWINGLE_FIELD_TYPE_VALUE_SHOP</option>
 				</field>
 
 			</fieldset>
