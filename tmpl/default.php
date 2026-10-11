@@ -10,13 +10,15 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('jquery.framework');
+use Joomla\CMS\Factory;
 
-//$lang       = JFactory::getLanguage();
-$document   = JFactory::getDocument();
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('mod_twingle', 'mod_twingle/twingle.css');
+
 $project_id = $params->get('project_id', '0');
 $type       = $params->get('type', 'widget');
-$id         = '_' . ModTwingleHelper::generateRandomString(9);
+$id         = '_' . $randomId;
 $base_url   = 'https://spenden.twingle.de/embed/genericorganisation/genericproject';
 
 // Get presets and pass to script loading url
@@ -34,24 +36,30 @@ foreach (array_filter($tw_params) as $tw_key => $tw_value) {
 }
 $url_params = implode('&', $url_params);
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx') ?? '', ENT_COMPAT, 'UTF-8');
 
 /* Load external JS only once per page */
-//if (!$twingle_js_loaded) {
-    $document->addScriptDeclaration('
+if ($type === 'shop') {
+  $wa->addInlineScript("
     (function() {
-//      var u="' . $base_url . '/' . $project_id . '/' . $type . '/' . $id . '?' . $url_params . '"; // Buggy, form doesn´t load...
-      var u="' . $base_url . '/' . $project_id . '/' . $type . '/' . $id . '";
-      var d=document, g=d.createElement(\'script\'), s=d.getElementsByTagName(\'script\')[0];
-      g.type=\'text/javascript\'; g.async=true; g.defer=true; g.src=u; s.parentNode.insertBefore(g,s);
+      var u='" . $base_url . "/" . $project_id . "/" . $type . "';
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.id='tw-" . $id . "'; g.defer=true; g.src=u; s.parentNode.insertBefore(g,s);
     })();
+  ");
+} else {
+  $wa->addInlineScript('
+      (function() {
+        var u="' . $base_url . '/' . $project_id . '/' . $type . '/' . $id . '";
+        var d=document, g=d.createElement(\'script\'), s=d.getElementsByTagName(\'script\')[0];
+        g.type=\'text/javascript\'; g.async=true; g.defer=true; g.src=u; s.parentNode.insertBefore(g,s);
+      })();
   ');
-//  $twingle_js_loaded = true;
-//}
+}
 ?>
 
 <!-- twingle -->
-  <div class="twingle<?php echo $moduleclass_sfx; ?> <?= $type; ?>">
+  <div class="mod-twingle<?php echo $moduleclass_sfx; ?> <?= $type; ?>">
     <div id="twingle-public-embed-<?= $id ?>"></div>
   </div>
 <!-- twingle -->

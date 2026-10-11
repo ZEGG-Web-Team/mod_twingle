@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="1.0" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
 	<name>MOD_TWINGLE</name>
 	<author>Benno Flory</author>
 	<authorUrl>https://github.com/sternenvogel</authorUrl>
-	<creationDate>April 2022</creationDate>
+	<creationDate>March 2026</creationDate>
 	<copyright>Copyright (C) 2022 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.2.0</version>
+	<version>2.0.1</version>
 	<description>MOD_TWINGLE_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Module\Twingle</namespace>
 	<files>
-		<filename module="mod_twingle">mod_twingle.php</filename>
+		<folder module="mod_twingle">services</folder>
+		<folder>src</folder>
 		<folder>tmpl</folder>
-		<filename>helper.php</filename>
+		<folder>language</folder>
 	</files>
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_twingle.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_twingle.sys.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_twingle.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_twingle.sys.ini</language>
+	<media destination="mod_twingle" folder="assets">
+		<folder>css</folder>
+	</media>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_twingle.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_twingle.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.mod_twingle.ini</language>
+		<language tag="de-DE">de-DE/de-DE.mod_twingle.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
@@ -81,6 +86,7 @@
 					default="widget"
 					>
 					<option value="widget">MOD_TWINGLE_FIELD_TYPE_VALUE_WIDGET</option>
+					<option value="shop">MOD_TWINGLE_FIELD_TYPE_VALUE_SHOP</option>
 				</field>
 
 			</fieldset>
